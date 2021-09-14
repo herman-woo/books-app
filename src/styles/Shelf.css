@@ -1,0 +1,15 @@
+.shelf{
+  padding-bottom: 20px;
+}
+.shelf-title{
+    height: 30px;
+    margin-top: 20px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+}
+.shelf-body{
+    min-height: 380px;
+    margin-top: none;
+}
+

@@ -1,0 +1,97 @@
+.book{
+    border: 6px solid rgb(255, 255, 255);
+    border-radius: 2%;
+    height: auto;
+    width: 270px;
+    box-shadow: 5px 7px 15px 2px  #4e4e4e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: ease 0.55s all;
+  }
+  .book:hover{
+    box-shadow: 5px 7px 30px 2px  #4e4e4e;
+    transition: ease 0.55s all;
+  }
+  .book-authors{
+      width: 200px;
+  }
+  .book-button{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+  }
+  .book-button-dropdown{
+    display: flex;
+    flex-direction: column;
+
+  }
+  .book-button-dropdown-content{
+    color: white;
+    display: none;
+    position: absolute;
+    min-width: 120px;
+    z-index: 1;
+    margin-top: 25px;
+    margin-left: 25px;
+    padding: 10px;
+    border-radius: 5%;
+    background-color: rgb(106, 209, 145);
+    box-shadow: 5px 7px 15px 2px  #4e4e4e;
+  }
+  .book-button-dropdown-content-show {
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .book-button-item{
+    padding: 10px;
+    width: 140px;
+  }
+  .book-button-item:hover{
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+  .book-image{
+    height: 320px;
+    width: 270px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  .book-info-bottom{
+    height: 80px;
+    width: 270px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .book-info{
+    height: 140px;
+    width: 270px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  button{
+      border-radius: 100%;
+      width: 50px;
+      height: 50px;
+      background-color: rgb(106, 209, 145);
+      cursor: pointer;
+      background-image: url(../icons/arrow-down.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+  }
+  button:focus{
+    color: black;
+  }
+
+  .highlight{
+    border: 2px solid white;
+    font-weight: 600;
+  }

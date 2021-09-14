@@ -1,86 +1,76 @@
 import React, { Component } from 'react';
-import AddGame from './AddGame';
-import GamesLibrary from './GamesLibrary'
-import MyGamesLog from './MyGamesLog';
-import * as GamesAPI from './utils/GamesAPI'
 import { Route } from 'react-router-dom';
+import MyReads from './components/MyReadsComponent';
+import Search from './components/SearchComponent';
+import * as BooksAPI from './utils/BooksAPI'
+
+
   class App extends Component{
   state = {
-    display: 'log',
-    games: []
+    books: []
   }
   componentDidMount(){
-    GamesAPI.getAll()
-        .then((games)=>{
+    BooksAPI.getAll()
+        .then((books)=>{
           this.setState(() => ({
-            games
-          }))
-        })
+            books
+      }))
+    })
   }
-  createContact = (game) => {
-    GamesAPI.create(game)
-      .then((game)=>{
-        this.setState((currentState) => ({
-          games: currentState.games.concat([game])
+
+  updateBooks = (book,shelf) => {
+    BooksAPI.update(book,shelf)
+    .then(() => {
+      return BooksAPI.getAll()
+      })
+      .then(res => 
+        this.setState({
+          books: res
         }))
-      })
-  }
+    }
 
-  removeContact = (game) => {
-    this.setState((currentState)=>({
-      games: currentState.games.filter((c) => {
-        return c.id !== game.id
-      })
-    }))
-    GamesAPI.remove(game)
-  }
-
-  switchState = (clone,game) => {
-    this.createContact(clone)
-    this.removeContact(game)
-  }
-
-  /* CALLING METHODS */
-  //1. Method that Changes the Game Status
-  //not used anymore, but still useful for reference
-  /* when updating an array in the state, call the whole array
-  gameStatusChanger = (ID, status) => {
-    let gamesArray = this.state.games.slice()
-    for (const game of gamesArray){
-      if (game.id === ID){
-        game.status = status
+   render (){
+    let id = "none"    
+    const clearDropDown = (newID) => {
+      if (newID !== "none"){
+        id = newID
+      }
+      else{
+        if(id !== "none"){
+          const elements = document.getElementsByClassName("book-button-dropdown-content-show")
+          for (let element of elements){
+            if(element.id !== id){
+              element.classList.remove("book-button-dropdown-content-show")
+            }
+          }
+          id = "none" 
+        }
+        else{
+          const elements = document.getElementsByClassName("book-button-dropdown-content-show")
+          if(elements.length > 0 ){
+            elements[0].classList.remove("book-button-dropdown-content-show")
+          }
+        }
       }
     }
-    this.setState({games: gamesArray})
-  }
-  */
-  
-   render (){
     return(
       <div>
-        <Route exact path='/' render={() => (
-          <MyGamesLog
-            mygames = {this.state.games}
-            onDeleteContact={this.removeContact}
-            onSwitch = {this.switchState}
-          />
-        )} />
+        <Route exact path='/' 
+          render = {() => (
+            <MyReads
+              books = {this.state.books}
+              clearDropDown = {clearDropDown}
+              update = {this.updateBooks}
+            />
+          )}
+        />
         <Route path='/search' render={()=> (
-          <GamesLibrary
-            allgames = {this.state.games}
-            display={this.state.display}
-            onSwitch = {this.switchState}
-            onRemove = {this.removeContact}
+          <Search
+            books = {this.state.books}
+            clearDropDown = {clearDropDown}
+            update = {this.updateBooks}
           />
         )}/>
-
-        
-
-        {this.state.display === 'add' &&(
-                   <AddGame
-          display={this.state.display}
-        />
-        )}
       </div>
     );
   }

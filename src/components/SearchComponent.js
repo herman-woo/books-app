@@ -2,57 +2,71 @@ import React, { Component } from 'react';
 import Book from './BookComponent';
 import { Link } from "react-router-dom";
 import '../styles/Search.css';
-
+import * as BooksAPI from '../utils/BooksAPI'
 class Search extends Component {
   state = {
-    search: ''
+    search: '',
+    results: [],
+    query: ''
   }  
-  updateQuery = (search) => {
-    this.setState(() => ({search: search}))
+  async submitSearch(){
+    const res = await BooksAPI.search(this.state.search)
+    this.setState({
+      results: res,
+      query: this.state.search
+    })
   }
-
-  clearSearch = () => {
-    this.updateQuery('')
-  }
-
   render(){
-    const { search } = this.state
-    const { books,update,clearDropDown } = this.props
-    const results = search === ''
-    ? ''
-    : books.filter((book) => (
-      book.title.toLowerCase().includes(search.toLowerCase())
-    ))
-
+    const { search,results,query } = this.state
+    const { update,clearDropDown } = this.props
+    const updateQuery = async (search) => {
+      this.setState(() => ({
+        search: search,
+      }))
+    }
+    const clearSearch = () => {
+      this.setState({
+        search: '',
+        results: [],
+        query: ''
+      })
+    }
       return(
       <div className='search' onClick={() => clearDropDown("none")}>
         <div className='search-header'>
-          <input
-            className='search-books-input'
-            type='text'
-            placeholder='Search Books'
-            value={search}
-            onChange={(event)=> this.updateQuery(event.target.value)}
-          ></input>
+          <div className='search-bar'>
+             <input
+              className='search-books-input'
+              type='text'
+              placeholder='Search Books'
+              value={search}
+              onChange={(event)=> updateQuery(event.target.value)}>
+            </input>
+            <div className="search-button-holder">
+              <button className="search-button" onClick={() => this.submitSearch()}>Enter Search</button>              
+            </div>
+          </div>
           <div className='search-results-title'>           
-            {search === ''
-            ? <h1>Search the Library</h1>
-            : <h2>{`${results.length} search ${results.length === 1
-              ? 'result'
-              : 'results'} for '${search}'`}</h2>}
-            {search!== '' &&(
+            {query === ''
+                ? <h1>Search the Library</h1>
+                : <h2>{results.length === undefined ? 
+                  `No results for ${query}` : 
+                  results.length === 1 ?
+                  `1 result for '${query}'` :
+                  `${results.length} results for '${query}'`
+                  }</h2>}
+            {query!== '' &&(
               <button className='clear button'
-              onClick={this.clearSearch}>
-                Clear Search
+                  onClick={() => clearSearch()}>
+                    Clear Search
               </button>
             )}      
-            </div>
-        </div>
+          </div>
 
-        
+        </div>
         <div className='search-results'>          
           <ol className='books-list'>
-            {results !== '' && (
+            {results.length !== undefined && (
               results.map((book)=>(
                 <Book 
                 book={book}
@@ -64,8 +78,6 @@ class Search extends Component {
             }
           </ol>
         </div>
-
-
         <div className='search-footer'>
           <Link
             to='/'
@@ -80,3 +92,11 @@ class Search extends Component {
   }
 
   export default Search
+
+
+  /*
+
+ 
+
+    
+  */

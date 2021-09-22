@@ -22,10 +22,9 @@ class Book extends Component{
                 <div className="book-info">
                     <h3>{book.title}</h3>
                     <div className="book-info-bottom">
-                        <div className="book-authors">{book.authors.reduce((author, current) => {
-                            current = current+", "+author
-                            return current
-                            }
+                        <div className="book-authors">{book.authors && book.authors.map((author) => {
+                            return author
+                        }
                         )}</div>
                         <div className="book-button">
                             <div className="book-button-dropdown" >
